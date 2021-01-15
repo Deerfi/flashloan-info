@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { RowBetween, RowFixed } from '../Row'
 import { AutoColumn } from '../Column'
 import { TYPE } from '../../Theme'
-import { useSavedTokens, useSavedPairs } from '../../contexts/LocalStorage'
+import { useSavedTokens, useSavedPools } from '../../contexts/LocalStorage'
 import { Hover } from '..'
 import TokenLogo from '../TokenLogo'
 import AccountSearch from '../AccountSearch'
@@ -48,7 +48,7 @@ const StyledIcon = styled.div`
 `
 
 function PinnedData({ history, open, setSavedOpen }) {
-  const [savedPairs, , removePair] = useSavedPairs()
+  const [savedPools, , removePool] = useSavedPools()
   const [savedTokens, , removeToken] = useSavedTokens()
 
   return !open ? (
@@ -60,92 +60,92 @@ function PinnedData({ history, open, setSavedOpen }) {
       </SavedButton>
     </RightColumn>
   ) : (
-    <RightColumn gap="1rem" open={open}>
-      <SavedButton onClick={() => setSavedOpen(false)} open={open}>
-        <RowFixed>
+      <RightColumn gap="1rem" open={open}>
+        <SavedButton onClick={() => setSavedOpen(false)} open={open}>
+          <RowFixed>
+            <StyledIcon>
+              <Bookmark size={16} />
+            </StyledIcon>
+            <TYPE.main ml={'4px'}>Saved</TYPE.main>
+          </RowFixed>
           <StyledIcon>
-            <Bookmark size={16} />
+            <ChevronRight />
           </StyledIcon>
-          <TYPE.main ml={'4px'}>Saved</TYPE.main>
-        </RowFixed>
-        <StyledIcon>
-          <ChevronRight />
-        </StyledIcon>
-      </SavedButton>
-      <AccountSearch small={true} />
-      <AutoColumn gap="40px" style={{ marginTop: '2rem' }}>
-        <AutoColumn gap={'12px'}>
-          <TYPE.main>Pinned Pairs</TYPE.main>
-          {Object.keys(savedPairs).filter((key) => {
-            return !!savedPairs[key]
-          }).length > 0 ? (
-            Object.keys(savedPairs)
-              .filter((address) => {
-                return !!savedPairs[address]
-              })
-              .map((address) => {
-                const pair = savedPairs[address]
-                return (
-                  <RowBetween key={pair.address}>
-                    <ButtonFaded onClick={() => history.push('/pair/' + address)}>
-                      <RowFixed>
-                        <TYPE.header>
-                          <FormattedName
-                            text={pair.token0Symbol + '/' + pair.token1Symbol}
-                            maxCharacters={12}
-                            fontSize={'12px'}
-                          />
-                        </TYPE.header>
-                      </RowFixed>
-                    </ButtonFaded>
-                    <Hover onClick={() => removePair(pair.address)}>
-                      <StyledIcon>
-                        <X size={16} />
-                      </StyledIcon>
-                    </Hover>
-                  </RowBetween>
-                )
-              })
-          ) : (
-            <TYPE.light>Pinned pairs will appear here.</TYPE.light>
-          )}
+        </SavedButton>
+        <AccountSearch small={true} />
+        <AutoColumn gap="40px" style={{ marginTop: '2rem' }}>
+          <AutoColumn gap={'12px'}>
+            <TYPE.main>Pinned Pools</TYPE.main>
+            {Object.keys(savedPools).filter((key) => {
+              return !!savedPools[key]
+            }).length > 0 ? (
+                Object.keys(savedPools)
+                  .filter((address) => {
+                    return !!savedPools[address]
+                  })
+                  .map((address) => {
+                    const pool = savedPools[address]
+                    return (
+                      <RowBetween key={pool.address}>
+                        <ButtonFaded onClick={() => history.push('/pool/' + address)}>
+                          <RowFixed>
+                            <TYPE.header>
+                              <FormattedName
+                                text={'pool/' + pool.tokenSymbol}
+                                maxCharacters={12}
+                                fontSize={'12px'}
+                              />
+                            </TYPE.header>
+                          </RowFixed>
+                        </ButtonFaded>
+                        <Hover onClick={() => removePool(pool.address)}>
+                          <StyledIcon>
+                            <X size={16} />
+                          </StyledIcon>
+                        </Hover>
+                      </RowBetween>
+                    )
+                  })
+              ) : (
+                <TYPE.light>Pinned pools will appear here.</TYPE.light>
+              )}
+          </AutoColumn>
+          <ScrollableDiv gap={'12px'}>
+            <TYPE.main>Pinned Tokens</TYPE.main>
+            {Object.keys(savedTokens).filter((key) => {
+              return !!savedTokens[key]
+            }).length > 0 ? (
+                Object.keys(savedTokens)
+                  .filter((address) => {
+                    return !!savedTokens[address]
+                  })
+                  .map((address) => {
+                    const token = savedTokens[address]
+                    return (
+                      <RowBetween key={address}>
+                        <ButtonFaded onClick={() => history.push('/token/' + address)}>
+                          <RowFixed>
+                            <TokenLogo address={address} size={'14px'} />
+                            <TYPE.header ml={'6px'}>
+                              <FormattedName text={token.symbol} maxCharacters={12} fontSize={'12px'} />
+                            </TYPE.header>
+                          </RowFixed>
+                        </ButtonFaded>
+                        <Hover onClick={() => removeToken(address)}>
+                          <StyledIcon>
+                            <X size={16} />
+                          </StyledIcon>
+                        </Hover>
+                      </RowBetween>
+                    )
+                  })
+              ) : (
+                <TYPE.light>Pinned tokens will appear here.</TYPE.light>
+              )}
+          </ScrollableDiv>
         </AutoColumn>
-        <ScrollableDiv gap={'12px'}>
-          <TYPE.main>Pinned Tokens</TYPE.main>
-          {Object.keys(savedTokens).filter((key) => {
-            return !!savedTokens[key]
-          }).length > 0 ? (
-            Object.keys(savedTokens)
-              .filter((address) => {
-                return !!savedTokens[address]
-              })
-              .map((address) => {
-                const token = savedTokens[address]
-                return (
-                  <RowBetween key={address}>
-                    <ButtonFaded onClick={() => history.push('/token/' + address)}>
-                      <RowFixed>
-                        <TokenLogo address={address} size={'14px'} />
-                        <TYPE.header ml={'6px'}>
-                          <FormattedName text={token.symbol} maxCharacters={12} fontSize={'12px'} />
-                        </TYPE.header>
-                      </RowFixed>
-                    </ButtonFaded>
-                    <Hover onClick={() => removeToken(address)}>
-                      <StyledIcon>
-                        <X size={16} />
-                      </StyledIcon>
-                    </Hover>
-                  </RowBetween>
-                )
-              })
-          ) : (
-            <TYPE.light>Pinned tokens will appear here.</TYPE.light>
-          )}
-        </ScrollableDiv>
-      </AutoColumn>
-    </RightColumn>
-  )
+      </RightColumn>
+    )
 }
 
 export default withRouter(PinnedData)

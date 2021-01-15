@@ -34,14 +34,14 @@ const CHART_VIEW = {
   FEES: 'Fees',
 }
 
-const PairReturnsChart = ({ account, position }) => {
+const PoolReturnsChart = ({ account, position }) => {
   let data = useUserPositionChart(position, account)
 
   const [timeWindow, setTimeWindow] = useTimeframe()
 
   const below600 = useMedia('(max-width: 600px)')
 
-  const color = useColor(position?.pair.token0.id)
+  const color = useColor(position?.pool.token.id)
 
   const [chartView, setChartView] = useState(CHART_VIEW.VALUE)
 
@@ -62,37 +62,37 @@ const PairReturnsChart = ({ account, position }) => {
           <DropdownSelect options={timeframeOptions} active={timeWindow} setActive={setTimeWindow} />
         </RowBetween>
       ) : (
-        <OptionsRow>
-          <AutoRow gap="6px" style={{ flexWrap: 'nowrap' }}>
-            <OptionButton active={chartView === CHART_VIEW.VALUE} onClick={() => setChartView(CHART_VIEW.VALUE)}>
-              Liquidity
+          <OptionsRow>
+            <AutoRow gap="6px" style={{ flexWrap: 'nowrap' }}>
+              <OptionButton active={chartView === CHART_VIEW.VALUE} onClick={() => setChartView(CHART_VIEW.VALUE)}>
+                Liquidity
             </OptionButton>
-            <OptionButton active={chartView === CHART_VIEW.FEES} onClick={() => setChartView(CHART_VIEW.FEES)}>
-              Fees
+              <OptionButton active={chartView === CHART_VIEW.FEES} onClick={() => setChartView(CHART_VIEW.FEES)}>
+                Fees
             </OptionButton>
-          </AutoRow>
-          <AutoRow justify="flex-end" gap="6px">
-            <OptionButton
-              active={timeWindow === timeframeOptions.WEEK}
-              onClick={() => setTimeWindow(timeframeOptions.WEEK)}
-            >
-              1W
+            </AutoRow>
+            <AutoRow justify="flex-end" gap="6px">
+              <OptionButton
+                active={timeWindow === timeframeOptions.WEEK}
+                onClick={() => setTimeWindow(timeframeOptions.WEEK)}
+              >
+                1W
             </OptionButton>
-            <OptionButton
-              active={timeWindow === timeframeOptions.MONTH}
-              onClick={() => setTimeWindow(timeframeOptions.MONTH)}
-            >
-              1M
+              <OptionButton
+                active={timeWindow === timeframeOptions.MONTH}
+                onClick={() => setTimeWindow(timeframeOptions.MONTH)}
+              >
+                1M
             </OptionButton>
-            <OptionButton
-              active={timeWindow === timeframeOptions.ALL_TIME}
-              onClick={() => setTimeWindow(timeframeOptions.ALL_TIME)}
-            >
-              All
+              <OptionButton
+                active={timeWindow === timeframeOptions.ALL_TIME}
+                onClick={() => setTimeWindow(timeframeOptions.ALL_TIME)}
+              >
+                All
             </OptionButton>
-          </AutoRow>
-        </OptionsRow>
-      )}
+            </AutoRow>
+          </OptionsRow>
+        )}
       <ResponsiveContainer aspect={aspect}>
         {data ? (
           <LineChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }} barCategoryGap={1} data={data}>
@@ -148,11 +148,11 @@ const PairReturnsChart = ({ account, position }) => {
             />
           </LineChart>
         ) : (
-          <LocalLoader />
-        )}
+            <LocalLoader />
+          )}
       </ResponsiveContainer>
     </ChartWrapper>
   )
 }
 
-export default PairReturnsChart
+export default PoolReturnsChart

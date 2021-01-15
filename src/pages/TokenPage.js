@@ -6,23 +6,23 @@ import styled from 'styled-components'
 import Link from '../components/Link'
 import Panel from '../components/Panel'
 import TokenLogo from '../components/TokenLogo'
-import PairList from '../components/PairList'
+import PoolList from '../components/PoolList'
 import Loader from '../components/LocalLoader'
 import { AutoRow, RowBetween, RowFixed } from '../components/Row'
 import Column, { AutoColumn } from '../components/Column'
-import { ButtonLight, ButtonDark } from '../components/ButtonStyled'
+import { ButtonLight } from '../components/ButtonStyled'
 import TxnList from '../components/TxnList'
 import TokenChart from '../components/TokenChart'
 import { BasicLink } from '../components/Link'
 import Search from '../components/Search'
-import { formattedNum, formattedPercent, getPoolLink, getSwapLink, localNumber } from '../utils'
-import { useTokenData, useTokenTransactions, useTokenPairs } from '../contexts/TokenData'
+import { formattedNum, formattedPercent, getPoolLink, localNumber } from '../utils'
+import { useTokenData, useTokenTransactions, useTokenPools } from '../contexts/TokenData'
 import { TYPE, ThemedBackground } from '../Theme'
 import { transparentize } from 'polished'
 import { useColor } from '../hooks'
 import CopyHelper from '../components/Copy'
 import { useMedia } from 'react-use'
-import { useDataForList } from '../contexts/PairData'
+import { useDataForList } from '../contexts/PoolData'
 import { useEffect } from 'react'
 import Warning from '../components/Warning'
 import { usePathDismissed, useSavedTokens } from '../contexts/LocalStorage'
@@ -112,10 +112,10 @@ function TokenPage({ address, history }) {
   // detect color from token
   const backgroundColor = useColor(id, symbol)
 
-  const allPairs = useTokenPairs(address)
+  const allPools = useTokenPools(address)
 
-  // pairs to show in pair list
-  const fetchedPairsList = useDataForList(allPairs)
+  // pools to show in pool list
+  const fetchedPoolsList = useDataForList(allPools)
 
   // all transactions with this token
   const transactions = useTokenTransactions(address)
@@ -129,8 +129,8 @@ function TokenPage({ address, history }) {
     oneDayVolumeUSD || oneDayVolumeUSD === 0
       ? formattedNum(oneDayVolumeUSD === 0 ? oneDayVolumeUT : oneDayVolumeUSD, true)
       : oneDayVolumeUSD === 0
-      ? '$0'
-      : '-'
+        ? '$0'
+        : '-'
 
   // mark if using untracked volume
   const [usingUtVolume, setUsingUtVolume] = useState(false)
@@ -239,15 +239,10 @@ function TokenPage({ address, history }) {
                       <Bookmark style={{ marginRight: '0.5rem', opacity: 0.4 }} />
                     </StyledIcon>
                   ) : (
-                    <></>
-                  )}
+                        <></>
+                      )}
                   <Link href={getPoolLink(address)} target="_blank">
                     <ButtonLight color={backgroundColor}>+ Add Liquidity</ButtonLight>
-                  </Link>
-                  <Link href={getSwapLink(address)} target="_blank">
-                    <ButtonDark ml={'.5rem'} mr={below1080 && '.5rem'} color={backgroundColor}>
-                      Trade
-                    </ButtonDark>
                   </Link>
                 </RowFixed>
               </span>
@@ -328,7 +323,7 @@ function TokenPage({ address, history }) {
 
             <span>
               <TYPE.main fontSize={'1.125rem'} style={{ marginTop: '3rem' }}>
-                Top Pairs
+                Top Pools
               </TYPE.main>
             </span>
             <Panel
@@ -338,11 +333,11 @@ function TokenPage({ address, history }) {
                 padding: '1.125rem 0 ',
               }}
             >
-              {address && fetchedPairsList ? (
-                <PairList color={backgroundColor} address={address} pairs={fetchedPairsList} />
+              {address && fetchedPoolsList ? (
+                <PoolList color={backgroundColor} address={address} pools={fetchedPoolsList} />
               ) : (
-                <Loader />
-              )}
+                  <Loader />
+                )}
             </Panel>
             <RowBetween mt={40} mb={'1rem'}>
               <TYPE.main fontSize={'1.125rem'}>Transactions</TYPE.main> <div />
