@@ -482,43 +482,6 @@ export const Search = ({ small = false }) => {
             </Blue>
           </Heading>
         </div>
-        <Heading>
-          <Gray>Tokens</Gray>
-        </Heading>
-        <div>
-          {Object.keys(filteredTokenList).length === 0 && (
-            <MenuItem>
-              <TYPE.body>No results</TYPE.body>
-            </MenuItem>
-          )}
-          {filteredTokenList.slice(0, tokensShown).map((token) => {
-            // update displayed names
-            updateNameData({ token0: token })
-            return (
-              <BasicLink to={'/token/' + token.id} key={token.id} onClick={onDismiss}>
-                <MenuItem>
-                  <RowFixed>
-                    <TokenLogo address={token.id} style={{ marginRight: '10px' }} />
-                    <FormattedName text={token.name} maxCharacters={20} style={{ marginRight: '6px' }} />
-                    (<FormattedName text={token.symbol} maxCharacters={6} />)
-                  </RowFixed>
-                </MenuItem>
-              </BasicLink>
-            )
-          })}
-
-          <Heading
-            hide={!(Object.keys(filteredTokenList).length > 3 && Object.keys(filteredTokenList).length >= tokensShown)}
-          >
-            <Blue
-              onClick={() => {
-                setTokensShown(tokensShown + 5)
-              }}
-            >
-              See more...
-            </Blue>
-          </Heading>
-        </div>
       </Menu>
     </Container>
   )
