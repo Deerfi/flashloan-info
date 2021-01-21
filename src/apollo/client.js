@@ -36,7 +36,9 @@ export const stakingClient = new ApolloClient({
 
 export const blockClient = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
+    // kovan
+    uri: 'https://api.thegraph.com/subgraphs/name/blocklytics/kovan-blocks',
+    // uri: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
   }),
   cache: new InMemoryCache(),
 })

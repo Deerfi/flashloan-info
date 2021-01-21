@@ -128,8 +128,7 @@ export async function getBlockFromTimestamp(timestamp) {
     },
     fetchPolicy: 'cache-first',
   })
-  // return result?.data?.blocks?.[0]?.number
-  return Math.floor((result?.data?.blocks?.[0]?.number - 11671005) * 12.89 / 4 + 23042359)
+  return result?.data?.blocks?.[0]?.number
 }
 
 /**
@@ -152,7 +151,7 @@ export async function getBlocksFromTimestamps(timestamps, skipCount = 500) {
       if (fetchedData[t].length > 0) {
         blocks.push({
           timestamp: t.split('t')[1],
-          number: Math.floor((fetchedData[t][0]['number'] - 11671005) * 12.89 / 4 + 23042359),
+          number: fetchedData[t][0]['number'],
         })
       }
     }
