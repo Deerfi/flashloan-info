@@ -7,7 +7,7 @@ import { BasicLink } from '../Link'
 
 import { useAllTokenData, useTokenData } from '../../contexts/TokenData'
 import { useAllPoolData, usePoolData } from '../../contexts/PoolData'
-import DoubleTokenLogo from '../DoubleLogo'
+import TokenLogo from '../TokenLogo'
 import { useMedia } from 'react-use'
 import { useAllPoolsInDeerfi, useAllTokensInDeerfi } from '../../contexts/GlobalData'
 import { OVERVIEW_TOKEN_BLACKLIST, POOL_BLACKLIST } from '../../constants'
@@ -199,10 +199,7 @@ export const Search = ({ small = false }) => {
             },
           })
 
-          setSearchedPools(
-            updateNameData(pools.data.asTokenAddress)
-              .concat(updateNameData(pools.data.asAddress))
-          )
+          setSearchedPools(updateNameData(pools.data.asTokenAddress).concat(updateNameData(pools.data.asAddress)))
           const foundTokens = tokens.data.asSymbol.concat(tokens.data.asAddress).concat(tokens.data.asName)
           setSearchedTokens(foundTokens)
         }
@@ -457,10 +454,8 @@ export const Search = ({ small = false }) => {
               return (
                 <BasicLink to={'/pool/' + pool.id} key={pool.id} onClick={onDismiss}>
                   <MenuItem>
-                    <DoubleTokenLogo a0={pool?.token?.id} a1={pool?.token?.id} margin={true} />
-                    <TYPE.body style={{ marginLeft: '10px' }}>
-                      {pool.token.symbol + ' Pool'} Pool
-                    </TYPE.body>
+                    <TokenLogo address={pool?.token?.id} margin={true} />
+                    <TYPE.body style={{ marginLeft: '10px' }}>{pool.token.symbol + ' Pool'} Pool</TYPE.body>
                   </MenuItem>
                 </BasicLink>
               )
