@@ -107,12 +107,11 @@ export function getMetricsForPositionWindow(positionT0: Position, positionT1: Po
   const priceRatioT1 = positionT1.tokenPriceUSD != 0 ? positionT1.tokenPriceUSD / positionT1.tokenPriceUSD : 0
 
   const token0_amount_no_fees = positionT1.tokenPriceUSD && priceRatioT1 ? sqrK_t0 * Math.sqrt(priceRatioT1) : 0
-  // const token1_amount_no_fees =
-  //   Number(positionT1.token1PriceUSD) && priceRatioT1 ? sqrK_t0 / Math.sqrt(priceRatioT1) : 0
+
   const no_fees_usd = token0_amount_no_fees * positionT1.tokenPriceUSD
 
   const difference_fees_token0 = token_amount_t1 - token0_amount_no_fees
-  // const difference_fees_token1 = token1_amount_t1 - token1_amount_no_fees
+
   const difference_fees_usd =
     difference_fees_token0 * positionT1.tokenPriceUSD
 
