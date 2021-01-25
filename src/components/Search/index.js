@@ -199,10 +199,7 @@ export const Search = ({ small = false }) => {
             },
           })
 
-          setSearchedPools(
-            updateNameData(pools.data.asTokenAddress)
-              .concat(updateNameData(pools.data.asAddress))
-          )
+          setSearchedPools(updateNameData(pools.data.asTokenAddress).concat(updateNameData(pools.data.asAddress)))
           const foundTokens = tokens.data.asSymbol.concat(tokens.data.asAddress).concat(tokens.data.asName)
           setSearchedTokens(foundTokens)
         }
@@ -336,16 +333,12 @@ export const Search = ({ small = false }) => {
             if (value && value.includes(' ')) {
               const poolA = value.split(' ')[0]?.toUpperCase()
               const poolB = value.split(' ')[1]?.toUpperCase()
-              return (
-                (pool.token.symbol.includes(poolA) || pool.token.symbol.includes(poolB))
-              )
+              return pool.token.symbol.includes(poolA) || pool.token.symbol.includes(poolB)
             }
             if (value && value.includes('-')) {
               const poolA = value.split('-')[0]?.toUpperCase()
               const poolB = value.split('-')[1]?.toUpperCase()
-              return (
-                (pool.token.symbol.includes(poolA) || pool.token.symbol.includes(poolB))
-              )
+              return pool.token.symbol.includes(poolA) || pool.token.symbol.includes(poolB)
             }
             const regexMatches = Object.keys(pool).map((field) => {
               const isAddress = value.slice(0, 2) === '0x'
@@ -458,9 +451,7 @@ export const Search = ({ small = false }) => {
                 <BasicLink to={'/pool/' + pool.id} key={pool.id} onClick={onDismiss}>
                   <MenuItem>
                     <TokenLogo address={pool?.token?.id} margin={true} />
-                    <TYPE.body style={{ marginLeft: '10px' }}>
-                      {pool.token.symbol + ' Pool'} Pool
-                    </TYPE.body>
+                    <TYPE.body style={{ marginLeft: '10px' }}>{pool.token.symbol + ' Pool'}</TYPE.body>
                   </MenuItem>
                 </BasicLink>
               )
