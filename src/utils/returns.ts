@@ -101,12 +101,12 @@ export function getMetricsForPositionWindow(positionT0: Position, positionT1: Po
   // get current token values
   const token_amount_t1 = t1Ownership * positionT1.reserve
 
-  // calculate squares to find imp loss and fee differences
-  const sqrK_t0 = Math.sqrt(token_amount_t0)
+  // find imp loss and fee differences
+  const K_t0 = token_amount_t0
   // eslint-disable-next-line eqeqeq
   const priceRatioT1 = positionT1.tokenPriceUSD != 0 ? positionT1.tokenPriceUSD / positionT1.tokenPriceUSD : 0
 
-  const token0_amount_no_fees = positionT1.tokenPriceUSD && priceRatioT1 ? sqrK_t0 * Math.sqrt(priceRatioT1) : 0
+  const token0_amount_no_fees = positionT1.tokenPriceUSD && priceRatioT1 ? K_t0 * priceRatioT1 : 0
 
   const no_fees_usd = token0_amount_no_fees * positionT1.tokenPriceUSD
 
@@ -117,7 +117,7 @@ export function getMetricsForPositionWindow(positionT0: Position, positionT1: Po
 
   // calculate USD value at t0 and t1 using initial token deposit amounts for asset return
   const assetValueT0 = token_amount_t0 * positionT0.tokenPriceUSD
-  const assetValueT1 = token_amount_t0 * positionT1.tokenPriceUSD
+  const assetValueT1 = token_amount_t1 * positionT1.tokenPriceUSD
 
   const imp_loss_usd = no_fees_usd - assetValueT1
   const DEERFI_RETURN = difference_fees_usd + imp_loss_usd
