@@ -123,7 +123,7 @@ function LPList({ lps, disbaleLinks, maxItems = 10 }) {
           <CustomLink area="pool" to={'/pool/' + lp.poolAddress}>
             <RowFixed>
               {!below600 && <TokenLogo address={lp.token} size={'16px'}/>}
-              {lp.poolName}
+              <span style={{marginLeft:'8px'}}>{lp.poolName}</span>
             </RowFixed>
           </CustomLink>
         </DataText>
