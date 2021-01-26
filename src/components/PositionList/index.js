@@ -203,7 +203,7 @@ function PositionList({ positions }) {
                   <TYPE.small fontWeight={400}>
                     {parseFloat(position.pool.token.derivedETH)
                       ? formattedNum(
-                          position?.fees.sum / (parseFloat(position.pool.token.derivedETH) * ethPrice) / 2,
+                          position?.fees.sum / (parseFloat(position.pool.token.derivedETH) * ethPrice),
                           false,
                           true
                         )
