@@ -235,28 +235,6 @@ function PoolPage({ poolAddress, history }) {
                 </RowFixed>
               </div>
             </AutoColumn>
-            {/* <AutoRow
-              gap="6px"
-              style={{
-                width: 'fit-content',
-                marginTop: below900 ? '1rem' : '0',
-                marginBottom: below900 ? '0' : '2rem',
-                flexWrap: 'wrap',
-              }}
-            >
-              <FixedPanel onClick={() => history.push(`/token/${token?.id}`)}>
-                <RowFixed>
-                  <TokenLogo address={token?.id} size={'16px'} />
-                  <TYPE.main fontSize={'16px'} lineHeight={1} fontWeight={500} ml={'4px'}>
-                    {token
-                      ? `1 ${formattedSymbol} = ${tokenRate} ${formattedSymbol} ${
-                          parseFloat(token?.derivedETH) ? '(' + token0USD + ')' : ''
-                        }`
-                      : '-'}
-                  </TYPE.main>
-                </RowFixed>
-              </FixedPanel>
-            </AutoRow> */}
             <>
               {!below1080 && (
                 <RowFixed>

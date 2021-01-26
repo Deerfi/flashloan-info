@@ -112,13 +112,6 @@ function LPList({ lps, disbaleLinks, maxItems = 10 }) {
             {below800 ? lp.user.id.slice(0, 4) + '...' + lp.user.id.slice(38, 42) : lp.user.id}
           </CustomLink>
         </DataText>
-
-        {/* {!below1080 && (
-          <DataText area="type" justifyContent="flex-end">
-            {lp.type}
-          </DataText>
-        )} */}
-
         <DataText>
           <CustomLink area="pool" to={'/pool/' + lp.poolAddress}>
             <RowFixed>
@@ -154,11 +147,6 @@ function LPList({ lps, disbaleLinks, maxItems = 10 }) {
         <Flex alignItems="center" justifyContent="flex-start">
           <TYPE.main area="name">Account</TYPE.main>
         </Flex>
-        {/* {!below1080 && (
-          <Flex alignItems="center" justifyContent="flexEnd">
-            <TYPE.main area="type">Type</TYPE.main>
-          </Flex>
-        )} */}
         <Flex alignItems="center" justifyContent="flexEnd">
           <TYPE.main area="pool">Pool</TYPE.main>
         </Flex>
