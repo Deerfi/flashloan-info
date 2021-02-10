@@ -6,14 +6,14 @@ import Panel from '../components/Panel'
 import { PageWrapper, ContentWrapperLarge, StyledIcon } from '../components/index'
 import { AutoRow, RowBetween, RowFixed } from '../components/Row'
 import Column, { AutoColumn } from '../components/Column'
-import { ButtonLight } from '../components/ButtonStyled'
+import { ButtonLight, ButtonDark } from '../components/ButtonStyled'
 import PoolChart from '../components/PoolChart'
 import Link from '../components/Link'
 import TxnList from '../components/TxnList'
 import Loader from '../components/LocalLoader'
 import { BasicLink } from '../components/Link'
 import Search from '../components/Search'
-import { formattedNum, formattedPercent, getPoolLink } from '../utils'
+import { formattedNum, formattedPercent, getPoolLink, getFlashLoanLink } from '../utils'
 import { useColor } from '../hooks'
 import { usePoolData, usePoolTransactions } from '../contexts/PoolData'
 import { TYPE, ThemedBackground } from '../Theme'
@@ -231,6 +231,11 @@ function PoolPage({ poolAddress, history }) {
 
                   <Link external href={getPoolLink(token?.id)}>
                     <ButtonLight color={backgroundColor}>+ Add Liquidity</ButtonLight>
+                  </Link>
+                  <Link external href={getFlashLoanLink(token?.id)}>
+                    <ButtonDark ml={!below1080 && '.5rem'} mr={below1080 && '.5rem'} color={backgroundColor}>
+                      Flash Loan
+                    </ButtonDark>
                   </Link>
                 </RowFixed>
               </div>

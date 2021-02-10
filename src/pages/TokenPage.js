@@ -10,12 +10,12 @@ import PoolList from '../components/PoolList'
 import Loader from '../components/LocalLoader'
 import { AutoRow, RowBetween, RowFixed } from '../components/Row'
 import Column, { AutoColumn } from '../components/Column'
-import { ButtonLight } from '../components/ButtonStyled'
+import { ButtonLight, ButtonDark } from '../components/ButtonStyled'
 import TxnList from '../components/TxnList'
 import TokenChart from '../components/TokenChart'
 import { BasicLink } from '../components/Link'
 import Search from '../components/Search'
-import { formattedNum, formattedPercent, getPoolLink, localNumber } from '../utils'
+import { formattedNum, formattedPercent, getPoolLink, getFlashLoanLink, localNumber } from '../utils'
 import { useTokenData, useTokenTransactions, useTokenPools } from '../contexts/TokenData'
 import { TYPE, ThemedBackground } from '../Theme'
 import { transparentize } from 'polished'
@@ -241,6 +241,11 @@ function TokenPage({ address, history }) {
                   )}
                   <Link href={getPoolLink(address)} target="_blank">
                     <ButtonLight color={backgroundColor}>+ Add Liquidity</ButtonLight>
+                  </Link>
+                  <Link href={getFlashLoanLink(address)} target="_blank">
+                    <ButtonDark ml={'.5rem'} mr={below1080 && '.5rem'} color={backgroundColor}>
+                      FlashLoan
+                    </ButtonDark>
                   </Link>
                 </RowFixed>
               </span>

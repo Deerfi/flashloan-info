@@ -45,6 +45,12 @@ export function getPoolLink(tokenAddress, remove = false) {
   )
 }
 
+export function getFlashLoanLink(tokenAddress) {
+  return `https://deerfi.com/#/flashloan?inputCurrency=${
+    tokenAddress === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' ? 'ETH' : tokenAddress
+  }`
+}
+
 export function getMiningPoolLink(token0Address) {
   return `https://app.deerfi.com/#/uni/ETH/${token0Address}`
 }
