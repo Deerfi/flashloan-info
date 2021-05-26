@@ -11,7 +11,7 @@ import { Divider } from '..'
 import { withRouter } from 'react-router-dom'
 import { formattedNum } from '../../utils'
 import { TYPE } from '../../Theme'
-import DoubleTokenLogo from '../DoubleLogo'
+import TokenLogo from '../TokenLogo'
 import { RowFixed } from '../Row'
 
 dayjs.extend(utc)
@@ -42,7 +42,7 @@ const DashGrid = styled.div`
   display: grid;
   grid-gap: 1em;
   grid-template-columns: 10px 1.5fr 1fr 1fr;
-  grid-template-areas: 'number name pair value';
+  grid-template-areas: 'number name pool value';
   padding: 0 4px;
 
   > * {
@@ -51,12 +51,12 @@ const DashGrid = styled.div`
 
   @media screen and (max-width: 1080px) {
     grid-template-columns: 10px 1.5fr 1fr 1fr;
-    grid-template-areas: 'number name pair value';
+    grid-template-areas: 'number name pool value';
   }
 
   @media screen and (max-width: 600px) {
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-areas: 'name pair value';
+    grid-template-areas: 'name pool value';
   }
 `
 
@@ -112,18 +112,11 @@ function LPList({ lps, disbaleLinks, maxItems = 10 }) {
             {below800 ? lp.user.id.slice(0, 4) + '...' + lp.user.id.slice(38, 42) : lp.user.id}
           </CustomLink>
         </DataText>
-
-        {/* {!below1080 && (
-          <DataText area="type" justifyContent="flex-end">
-            {lp.type}
-          </DataText>
-        )} */}
-
         <DataText>
-          <CustomLink area="pair" to={'/pair/' + lp.pairAddress}>
+          <CustomLink area="pool" to={'/pool/' + lp.poolAddress}>
             <RowFixed>
-              {!below600 && <DoubleTokenLogo a0={lp.token0} a1={lp.token1} size={16} margin={true} />}
-              {lp.pairName}
+              {!below600 && <TokenLogo address={lp.token} size={'16px'}/>}
+              <span style={{marginLeft:'8px'}}>{lp.poolName}</span>
             </RowFixed>
           </CustomLink>
         </DataText>
@@ -154,13 +147,8 @@ function LPList({ lps, disbaleLinks, maxItems = 10 }) {
         <Flex alignItems="center" justifyContent="flex-start">
           <TYPE.main area="name">Account</TYPE.main>
         </Flex>
-        {/* {!below1080 && (
-          <Flex alignItems="center" justifyContent="flexEnd">
-            <TYPE.main area="type">Type</TYPE.main>
-          </Flex>
-        )} */}
         <Flex alignItems="center" justifyContent="flexEnd">
-          <TYPE.main area="pair">Pair</TYPE.main>
+          <TYPE.main area="pool">Pool</TYPE.main>
         </Flex>
         <Flex alignItems="center" justifyContent="flexEnd">
           <TYPE.main area="value">Value</TYPE.main>

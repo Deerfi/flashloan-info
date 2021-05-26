@@ -34,14 +34,14 @@ const CHART_VIEW = {
   FEES: 'Fees',
 }
 
-const PairReturnsChart = ({ account, position }) => {
+const PoolReturnsChart = ({ account, position }) => {
   let data = useUserPositionChart(position, account)
 
   const [timeWindow, setTimeWindow] = useTimeframe()
 
   const below600 = useMedia('(max-width: 600px)')
 
-  const color = useColor(position?.pair.token0.id)
+  const color = useColor(position?.pool.token.id)
 
   const [chartView, setChartView] = useState(CHART_VIEW.VALUE)
 
@@ -155,4 +155,4 @@ const PairReturnsChart = ({ account, position }) => {
   )
 }
 
-export default PairReturnsChart
+export default PoolReturnsChart

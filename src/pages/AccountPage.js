@@ -7,13 +7,13 @@ import { formattedNum } from '../utils'
 import Row, { AutoRow, RowFixed, RowBetween } from '../components/Row'
 import { AutoColumn } from '../components/Column'
 import UserChart from '../components/UserChart'
-import PairReturnsChart from '../components/PairReturnsChart'
+import PoolReturnsChart from '../components/PoolReturnsChart'
 import PositionList from '../components/PositionList'
 import MiningPositionList from '../components/MiningPositionList'
 import { TYPE } from '../Theme'
 import { ButtonDropdown, ButtonLight } from '../components/ButtonStyled'
 import { PageWrapper, ContentWrapper, StyledIcon } from '../components'
-import DoubleTokenLogo from '../components/DoubleLogo'
+import TokenLogo from '../components/TokenLogo'
 import { Bookmark, Activity } from 'react-feather'
 import Link from '../components/Link'
 import { FEE_WARNING_TOKENS } from '../constants'
@@ -95,14 +95,14 @@ function AccountPage({ account }) {
   const miningPositions = useMiningPositions(account)
 
   // get data for user stats
-  const transactionCount = transactions?.swaps?.length + transactions?.burns?.length + transactions?.mints?.length
+  const transactionCount = transactions?.flashLoans?.length + transactions?.burns?.length + transactions?.mints?.length
 
   // get derived totals
-  let totalSwappedUSD = useMemo(() => {
-    return transactions?.swaps
-      ? transactions?.swaps.reduce((total, swap) => {
-          return total + parseFloat(swap.amountUSD)
-        }, 0)
+  let totalFlashLoanedUSD = useMemo(() => {
+    return transactions?.flashLoans
+      ? transactions?.flashLoans.reduce((total, flashLoan) => {
+        return total + parseFloat(flashLoan.amountUSD)
+      }, 0)
       : 0
   }, [transactions])
 
@@ -112,8 +112,7 @@ function AccountPage({ account }) {
     if (positions) {
       for (let i = 0; i < positions.length; i++) {
         if (
-          FEE_WARNING_TOKENS.includes(positions[i].pair.token0.id) ||
-          FEE_WARNING_TOKENS.includes(positions[i].pair.token1.id)
+          FEE_WARNING_TOKENS.includes(positions[i].pool.token.id)
         ) {
           setShowWarning(true)
         }
@@ -135,12 +134,12 @@ function AccountPage({ account }) {
   const positionValue = useMemo(() => {
     return dynamicPositions
       ? dynamicPositions.reduce((total, position) => {
-          return (
-            total +
-            (parseFloat(position?.liquidityTokenBalance) / parseFloat(position?.pair?.totalSupply)) *
-              position?.pair?.reserveUSD
-          )
-        }, 0)
+        return (
+          total +
+          (parseFloat(position?.liquidityTokenBalance) / parseFloat(position?.pool?.totalSupply)) *
+          position?.pool?.reserveUSD
+        )
+      }, 0)
       : null
   }, [dynamicPositions])
 
@@ -157,7 +156,7 @@ function AccountPage({ account }) {
   const [savedAccounts, addAccount, removeAccount] = useSavedAccounts()
   const isBookmarked = savedAccounts.includes(account)
   const handleBookmarkClick = useCallback(() => {
-    ;(isBookmarked ? removeAccount : addAccount)(account)
+    ; (isBookmarked ? removeAccount : addAccount)(account)
   }, [account, isBookmarked, addAccount, removeAccount])
 
   return (
@@ -192,7 +191,7 @@ function AccountPage({ account }) {
           </RowBetween>
         </Header>
         <DashboardWrapper>
-          {showWarning && <Warning>Fees cannot currently be calculated for pairs that include AMPL.</Warning>}
+          {showWarning && <Warning>Fees cannot currently be calculated for pools that include AMPL.</Warning>}
           {!hideLPContent && (
             <DropdownWrapper>
               <ButtonDropdown width="100%" onClick={() => setShowDropdown(!showDropdown)} open={showDropdown}>
@@ -206,9 +205,9 @@ function AccountPage({ account }) {
                 )}
                 {activePosition && (
                   <RowFixed>
-                    <DoubleTokenLogo a0={activePosition.pair.token0.id} a1={activePosition.pair.token1.id} size={16} />
+                    <TokenLogo address={activePosition.pool.token.id} size={'16px'} />
                     <TYPE.body ml={'16px'}>
-                      {activePosition.pair.token0.symbol}-{activePosition.pair.token1.symbol} Position
+                      {activePosition.pool.token.symbol} Pool Position
                     </TYPE.body>
                   </RowFixed>
                 )}
@@ -217,14 +216,11 @@ function AccountPage({ account }) {
                 <Flyout>
                   <AutoColumn gap="0px">
                     {positions?.map((p, i) => {
-                      if (p.pair.token1.symbol === 'WETH') {
-                        p.pair.token1.symbol = 'ETH'
-                      }
-                      if (p.pair.token0.symbol === 'WETH') {
-                        p.pair.token0.symbol = 'ETH'
+                      if (p.pool.token.symbol === 'WETH') {
+                        p.pool.token.symbol = 'ETH'
                       }
                       return (
-                        p.pair.id !== activePosition?.pair.id && (
+                        p.pool.id !== activePosition?.pool.id && (
                           <MenuRow
                             onClick={() => {
                               setActivePosition(p)
@@ -232,9 +228,9 @@ function AccountPage({ account }) {
                             }}
                             key={i}
                           >
-                            <DoubleTokenLogo a0={p.pair.token0.id} a1={p.pair.token1.id} size={16} />
+                            <TokenLogo address={p.pool.token.id} size={16} />
                             <TYPE.body ml={'16px'}>
-                              {p.pair.token0.symbol}-{p.pair.token1.symbol} Position
+                              {p.pool.token.symbol} Position
                             </TYPE.body>
                           </MenuRow>
                         )
@@ -296,7 +292,7 @@ function AccountPage({ account }) {
             <PanelWrapper>
               <Panel style={{ gridColumn: '1' }}>
                 {activePosition ? (
-                  <PairReturnsChart account={account} position={activePosition} />
+                  <PoolReturnsChart account={account} position={activePosition} />
                 ) : (
                   <UserChart account={account} position={activePosition} />
                 )}
@@ -351,12 +347,12 @@ function AccountPage({ account }) {
           >
             <AutoRow gap="20px">
               <AutoColumn gap="8px">
-                <TYPE.header fontSize={24}>{totalSwappedUSD ? formattedNum(totalSwappedUSD, true) : '-'}</TYPE.header>
-                <TYPE.main>Total Value Swapped</TYPE.main>
+                <TYPE.header fontSize={24}>{totalFlashLoanedUSD ? formattedNum(totalFlashLoanedUSD, true) : '-'}</TYPE.header>
+                <TYPE.main>Total Flash Loan Value</TYPE.main>
               </AutoColumn>
               <AutoColumn gap="8px">
                 <TYPE.header fontSize={24}>
-                  {totalSwappedUSD ? formattedNum(totalSwappedUSD * 0.003, true) : '-'}
+                  {totalFlashLoanedUSD ? formattedNum(totalFlashLoanedUSD * 0.0005, true) : '-'}
                 </TYPE.header>
                 <TYPE.main>Total Fees Paid</TYPE.main>
               </AutoColumn>
